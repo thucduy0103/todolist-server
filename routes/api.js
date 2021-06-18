@@ -24,7 +24,6 @@ router.post('/create-task', (req, res, next) => {
 });
 
 router.put('/update-task',(req,res,next)=>{
-
     if(req.body.id){
         Todo.findOne({_id:req.body.id},'todo')
             .then(data=>{
