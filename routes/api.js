@@ -3,15 +3,15 @@ const router = express.Router();
 const Todo = require('../models/ToDoModel');
 
 router.get('/get-all-tasks', (req, res, next) => {
-  console.log("get");
+  console.log('get-all')
   //this will return all the data, exposing only the id and action field to the client
-  Todo.find({}, 'todo')
+  Todo.find({})
     .then(data => res.json(data))
     .catch(next)
 });
 
 router.post('/create-task', (req, res, next) => {
-  console.log(create);
+  console.log(req.body);
   if(req.body.task){
     Todo.create(req.body)
       .then(data => res.json(data))
@@ -24,11 +24,17 @@ router.post('/create-task', (req, res, next) => {
 });
 
 router.put('/update-task',(req,res,next)=>{
-    if(req.body.id){
-        Todo.findOne({_id:req.body.id},'todo')
+  console.log(req.body);
+    if(req.body._id){
+        Todo.findOne({_id:req.body._id})
             .then(data=>{
-                data.task = req.body.task;
-                data.isDone = req.body.isDone;
+              data.task = req.body.task;
+                data.isDone = req.body.is_done;
+                data.save(function (err) {
+                  if (err) return handleError(err);
+                  console.log(data);
+                  res.send(data);
+                });               
             })
             .catch(next)
       }
